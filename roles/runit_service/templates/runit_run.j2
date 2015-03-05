@@ -1,0 +1,14 @@
+#!/bin/bash
+
+set -e
+exec 2>&1
+
+{% if runit_service_dir is defined %}
+cd {{ runit_service_dir }}
+{% endif %}
+
+{% for name, value in runit_service_envs.iteritems() %}
+export {{ name }}={{ value }}
+{% endfor %}
+
+exec chpst -u {{ runit_service_owner }} {{ runit_service_command }}

@@ -1,0 +1,17 @@
+---
+- name: create db user
+  postgresql_user: name={{ deploy_user }}
+  notify: reload postgresql
+  sudo: true
+  sudo_user: postgres
+
+- name: create databese db
+  postgresql_db: name={{ database_name }} owner={{ deploy_user }}
+  notify: reload postgresql
+  sudo: true
+  sudo_user: postgres
+
+- name: add hstore
+  shell: psql {{ database_name }} -c 'CREATE EXTENSION IF NOT EXISTS hstore;'
+  sudo: true
+  sudo_user: postgres

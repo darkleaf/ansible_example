@@ -1,0 +1,11 @@
+---
+- name: install packages for dev
+  apt: pkg={{ item }} state=present
+  with_items:
+    - git
+    - gcc
+    - g++
+    - make
+    - libncurses5-dev
+    - libpq-dev
+  sudo: yes

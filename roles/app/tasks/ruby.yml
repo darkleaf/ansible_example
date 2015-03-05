@@ -1,0 +1,28 @@
+---
+- name: add ruby-ng repository
+  apt_repository: >
+    repo=ppa:brightbox/ruby-ng
+    update_cache=yes
+  sudo: yes
+
+- name: remove rubygems
+  apt: >
+    pkg=rubygems
+    state=absent
+  sudo: yes
+
+- name: install ruby
+  apt: pkg={{ item }} state=latest
+  with_items:
+    - ruby2.2
+    - ruby2.2-dev
+    - ruby-switch
+  sudo: yes
+
+- name: switch ruby
+  shell: ruby-switch --set ruby2.2
+  sudo: yes
+
+- name: install bundler
+  gem: name=bundler state=present user_install=no
+  sudo: yes

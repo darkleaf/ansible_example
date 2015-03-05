@@ -1,0 +1,20 @@
+---
+allow_duplicates: yes
+dependencies:
+  - role: nginx
+  - role: redis
+  - role: postgresql
+  - role: runit_service
+    runit_service_name: unicorn
+    runit_service_owner: "{{ deploy_user }}"
+    runit_service_dir: "{{ project_root }}/current"
+    runit_service_envs:
+      RAILS_ENV: "{{ rails_env }}"
+    runit_service_command: bundle exec unicorn -c ./config/unicorn.rb
+  - role: runit_service
+    runit_service_name: sidekiq
+    runit_service_owner: "{{ deploy_user }}"
+    runit_service_dir: "{{ project_root }}/current"
+    runit_service_envs:
+      RAILS_ENV: "{{ rails_env }}"
+    runit_service_command: bundle exec sidekiq -C config/sidekiq.yml

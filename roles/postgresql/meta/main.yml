@@ -1,0 +1,6 @@
+---
+dependencies:
+  - role: runit_service
+    runit_service_name: postgresql
+    runit_service_owner: postgres:postgres:ssl-cert
+    runit_service_command: /usr/lib/postgresql/9.3/bin/postmaster -D /var/lib/postgresql/9.3/main -c config_file=/etc/postgresql/9.3/main/postgresql.conf

@@ -1,0 +1,17 @@
+- name: copy minisol_backuper site config
+  template: >
+    src=nginx_sites/minisol_backuper.j2
+    dest=/etc/nginx/sites-available/minisol_backuper
+    owner=root
+    group=root
+    mode=644
+  notify: reload nginx
+  sudo: yes
+
+- name: enable minisol_backuper site
+  file: >
+    src=/etc/nginx/sites-available/minisol_backuper
+    dest=/etc/nginx/sites-enabled/minisol_backuper
+    state=link
+  notify: reload nginx
+  sudo: yes

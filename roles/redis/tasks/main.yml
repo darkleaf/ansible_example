@@ -1,0 +1,22 @@
+---
+- name: install redis
+  apt: >
+    pkg=redis-server
+    state=present
+  sudo: yes
+
+- name: copy redis config
+  template: >
+    src=redis.conf.j2 dest=/etc/redis/redis.conf
+    owner=root
+    group=root
+    mode=644
+  sudo: yes
+  notify: restart redis-server
+
+- name: enable runit service
+  file: >
+    src=/etc/sv/redis-server
+    dest=/etc/service/redis-server
+    state=link
+  sudo: yes

@@ -1,0 +1,8 @@
+---
+- name: reload {{ runit_service_name }}
+  shell: sv reload {{ runit_service_name }}
+  sudo: yes
+
+- name: restart {{ runit_service_name }}
+  shell: sv restart {{ runit_service_name }}
+  sudo: yes

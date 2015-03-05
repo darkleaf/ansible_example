@@ -1,0 +1,16 @@
+upstream minisol_backuper {
+  server 127.0.0.1:8080;
+}
+
+server {
+  listen 80;
+  root {{ project_root }}/current/public;
+
+  try_files $uri @app;
+
+  location @app {
+    proxy_pass http://minisol_backuper;
+    proxy_set_header Host $host;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+  }
+}

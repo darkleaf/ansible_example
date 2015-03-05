@@ -1,0 +1,34 @@
+---
+- name: enable runit services
+  file: >
+    src=/etc/sv/{{ item }}
+    dest=/etc/service/{{ item }}
+    state=link
+  with_items:
+    - unicorn
+    - sidekiq
+  sudo: yes
+
+
+# может не сработать, нужно еще разок права проставить
+#- name: chown runit supervise
+#  file: >
+#    dest=/etc/sv/{{ item }}/supervise
+#    state=directory
+#    recurse=yes
+#    owner={{ deploy_user }}
+#  with_items:
+#    - unicorn
+#    - sidekiq
+#  sudo: yes
+
+- name: add sudo for service management
+  lineinfile: >
+    dest=/etc/sudoers
+    state=present
+    line='{{ deploy_user }} ALL=NOPASSWD: /usr/bin/sv {{ item[1] }} {{ item[0] }}'
+    validate='visudo -cf %s'
+  with_nested:
+    - ['unicorn', 'sidekiq']
+    - ['start', 'stop', 'restart', '1']
+  sudo: yes

@@ -1,0 +1,6 @@
+---
+dependencies:
+  - role: runit_service
+    runit_service_name: redis-server
+    runit_service_owner: redis
+    runit_service_command: redis-server /etc/redis/redis.conf

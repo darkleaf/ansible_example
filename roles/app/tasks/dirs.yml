@@ -1,0 +1,4 @@
+---
+- name: create project directory
+  file: dest={{ project_root }} state=directory owner={{ deploy_user }}
+  sudo: true

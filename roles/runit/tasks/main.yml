@@ -1,0 +1,20 @@
+---
+- name: install runit
+  apt: >
+    pkg=runit
+    state=present
+  sudo: yes
+
+- name: create log dir
+  file: >
+    dest=/var/log/runit/
+    state=directory
+    owner=root
+  sudo: yes
+
+- name: disable start daemons after install
+  copy: >
+    src=policy-rc.d
+    dest="/usr/sbin/policy-rc.d"
+    mode=755
+  sudo: yes

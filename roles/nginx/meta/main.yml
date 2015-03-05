@@ -1,0 +1,6 @@
+---
+dependencies:
+  - role: runit_service
+    runit_service_name: nginx
+    runit_service_owner: root
+    runit_service_command: nginx -c "/etc/nginx/nginx.conf"

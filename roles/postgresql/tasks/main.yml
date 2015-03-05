@@ -1,0 +1,27 @@
+---
+- name: add repo keys
+  apt_key: >
+    url="https://www.postgresql.org/media/keys/ACCC4CF8.asc"
+    state=present
+
+- name: add repositories
+  apt_repository: >
+    repo="deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main"
+    update_cache=yes
+
+- name: install postgresql
+  apt: >
+    pkg={{ item }}
+    state=present
+  with_items:
+    - postgresql-9.3
+    - postgresql-contrib-9.3
+    - python-psycopg2
+  sudo: yes
+
+- name: enable runit service
+  file: >
+    src=/etc/sv/postgresql
+    dest=/etc/service/postgresql
+    state=link
+  sudo: yes

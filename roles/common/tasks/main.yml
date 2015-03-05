@@ -1,0 +1,32 @@
+---
+- name: disable ipv6
+  sysctl: >
+    name='net.ipv6.conf.all.disable_ipv6'
+    value=1
+    sysctl_set=yes
+    state=present
+    reload=yes
+  sudo: yes
+
+- name: set locale
+  lineinfile: >
+    dest=/etc/environment
+    line='LC_ALL="en_US.UTF-8"'
+    state=present
+    backup=yes
+  sudo: yes
+
+- name: set timezone variables
+  copy: >
+    content='Etc/Moscow'
+    dest=/etc/timezone
+    backup=yes
+  sudo: yes
+  notify:
+    - update timezone
+
+- name: apt-get update
+  apt: >
+    update_cache=true
+    cache_valid_time=3600
+  sudo: yes
